@@ -1,22 +1,23 @@
-#Code
-Description of code to aid in development
-##Normal operation
-###Menu
-###Data logging mode
-###Data view
-###Data transfer
-###Police ping
+# Software
+A high level description of all software in device, organized as a loose roadmap
 
-##Events
+## Normal operation
+### Menu
+### Data logging mode
+### Data view
+### Data transfer
+### Police ping
+
+## Events
 Types of events a driver may initiate.
-###Goal
+### Goal
 Sends a location to all participating drivers, and Keeps track of order of arrival. Only for multiple drivers.
-####Description
+#### Description
 First driver picks destination. Once destination is confirmed, broadcasts to all vehicles in vacinety. Includes start time, all devices should have same time with GPS clocks. Each driver is given the option to accept or opt out. Those who opt in are given set up time (screen shall read "Set up"), before LEDs turn red and the driver has to stop. Screen will switch to arrow mode. A start signal is given by the LEDs. False starts are recorded and penalties are applied. 
 
 Once Arriving at destination, Signal is broadcast asking for scoreboard. If nobody is found, user is declared winner. Otherwise, request rank from leader. Exact arrival times are recorded in device for recordkeeping. Leader maintains a scoreboard until all participants check in or >67% of drivers have voted to close race (Someone drops out, crashes, pulled over, etc)
 
-####Pseudo
+#### Pseudo
 Initiating driver:
 1. Obtain Coordinates 
  1. Load from SD
@@ -80,54 +81,58 @@ All following drivers:
 7. Save race data (Optional)
 8. Return to normal operation.
 
-###Drag
+### Drag
 Allows one or two drivers 
-###Course
-###Time trial
-###Egg hunt (temp name)
+### Course
+### Time trial
+### Random point
 
-##Functions by module
+## Functions by module
 List of functions as implied above.
-###Microcontroller (Higher level)
+### Microcontroller (Higher level)
 - onRoute(Waypoint): Runs until destination is reached
 - getScoreboard(): Get scoreboard from other drivers
 - getInput(): gtes button and joystick values
-###GPS
+### GPS
 - getCoords(): returns GPS data
 - getVel(): Calculates velocity
 - getTravelDir(): Calculates direction of travel
 - getTargetDir(): Calculates direction to target
 - getDist(): Calculate distance to waypoint
 - getTime(): Uses GPS clock to retrieve time.
-###Screen
+### Screen
 - Arrow mode
  - updateArrow(TravelDir, TargetDir): Orient arrow on screen
  - updateDist(): Update distance on screen
-###NRF24
+### NRF24
 - send(payload): Sends payload on NRF24 antenna. Might need to un-generalize for specific uses.
 - nonBlockingRec(): Waiting for input, but not hindring other functions
 - blockingRec(): waiting for input, will not continue until input received.
-###SD card
+### SD card
 - write(data)
 - read(location)
-###LEDs
+### LEDs
 - setColor(LED,r,g,b)
-###Accelerometer
+### Accelerometer
 - readAccel():
 - calibrate():
-###WiFi
-###Bluetooth
+### WiFi
+### Bluetooth
 
-##Classes/Structs
-###Waypoints
+## Classes/Structs
+### Waypoints
 coordinates, name of location
-###Drivers
+### Drivers
 nametag, ID, Car make/model, driver score
-###Race Details (General or specific to race type?)
-###Scoreboard
+### Race Details (General or specific to race type?)
+### Scoreboard
 penalties, times, scores, nametags
 
-##App
+## Data transmission scheme
+
+## Data storage scheme
+
+## App
 More of a webserver... probably.
 
 ==================================================
