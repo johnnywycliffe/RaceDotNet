@@ -1,5 +1,5 @@
 # Race.Net
-Have you ever played Need For Speed Underground and wished you could pull up to that sweet muscle car yo see on your morning commute and challenge him to a drag race? Now you can! With Race.Net (pronounced RaceNet) you can effortlessly engage with other drivers.
+Have you ever played Need For Speed Underground and wished you could pull up to that sweet muscle car you see on your morning commute and challenge him to a drag race? Now you can! With Race.Net (pronounced RaceNet) you can effortlessly engage with other drivers.
 
 Utilizing a GPS receiver and an NRF24 transceiver mounted to a ESP32-WROOM-32 board, the Race.net is designed to draw minimal power while still providing several essential functions for car groups. The NRF antenna allows the vehicles to share data in a way not seen before, sharing waypoints and driver profiles at up to a 1/4 mile away, meaning everyone in a parking lot will be able to get the message without needing to text the address tons of times, or setting up a unique group each time.
 
@@ -20,6 +20,7 @@ Race.Net integrates with cellphones, allowing for exporting of data and selectin
 
 ## Project Status
 As of 2020-3-17, hardware has been ordered for two test units. See Checklist.md for more details.
+
 As of 2020-3-20, software is veing defined in pseudocode
 
 ## Future considerations

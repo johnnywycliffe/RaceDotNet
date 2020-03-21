@@ -67,14 +67,16 @@ This document is to give a general idea of the statue of individual modules and 
 ## Stage 2: Module functionality
 ### Whiteboarding (high level description and pseudocode)
 - [x] Define Mode - Point-to-Point
-- [ ] Define Mode - Course
-- [ ] Define Mode - Drag
-- [ ] Define Mode - Sprint
-- [ ] Define Mode - Random point
+- [x] Define Mode - Course
+- [x] Define Mode - Drag
+- [x] Define Mode - Sprint
+- [x]] Define Mode - Random point
 - [x] Define functionality - Cop ping
 - [x] Define functionality - Driver stats
 - [ ] Define data transmission structure
 - [ ] Define data file scheme
+- [ ] Define classes
+- [ ] Define main functions
 - [ ] Define WebApp/App
 
 ### Module functionality - Screen
@@ -171,7 +173,15 @@ This document is to give a general idea of the statue of individual modules and 
 - [ ] Scoreboard and all data is saved properly
 
 ### Drag
-TODO
+- [ ] Drivers are allowed to set up until they press button
+- [ ] GPS position is averaged to get most accurate position for start of race
+- [ ] Start position is saved to SD card
+- [ ] Light sequence lights up properly
+- [ ] Go is at end of countdown
+- [ ] GPS data is recorded during entire event
+- [ ] After 1/4 mile, GPS stops logging
+- [ ] Unit does math to calculate 0-60, 1/4 time, etc
+- [ ] Unit saves data to SD properly
 
 ### Course
 - [ ] Course creation can be initiated
@@ -183,13 +193,54 @@ TODO
 - [ ] Courses can be viewed
 - [ ] Courses can be erased
 - [ ] Course can be overlaid on a map on a phone
-- [ ] 
+- [ ] Course can be sent to other drivers
+- [ ] Course allows drivers to setup
+- [ ] Drivers are penalized for going before go signal
+- [ ] Checkpoints can be hit
+- [ ] All checkpoints must be hit to complete a lap
+- [ ] All checkpoints must be hit in order
+- [ ] Last checkpoint is start line, not checkpoint directly before start line
+- [ ] Once last checkpoint is hit, create scoreboard with other users
+- [ ] Save all relevant data
 
 ### Sprint
-TODO
+- [ ] Sprint creation can be initiated
+- [ ] Checkpointss can be chosen at any time
+- [ ] Checkpoint size can be adjusted
+- [ ] Generation can be exited and creates a loop.
+- [ ] Generated sprints are saved with a name
+- [ ] Sprints can be edited to adjust Checkpoint size
+- [ ] Sprints can be viewed
+- [ ] Sprints can be erased
+- [ ] Sprint can be overlaid on a map on a phone
+- [ ] Sprint can be sent to other drivers
+- [ ] Sprint allows drivers to setup
+- [ ] Drivers are penalized for going before go signal
+- [ ] Checkpoints can be hit
+- [ ] All checkpoints must be hit in order
+- [ ] Once last checkpoint is hit, create scoreboard with other users
+- [ ] Save all relevant data
 
 ### Random point
-TODO
+- [ ] Initial and Destination point saved correctly
+- [ ] Other units are given time to respond
+- [ ] Drivers can drop out during this period with no consequence
+- [ ] Responses are properly recorded
+- [ ] All units given driver list
+- [ ] Setup time starts and nobody can join
+- [ ] Drop outs earn a 'Withdrawl'
+- [ ] Setup time completes properly
+- [ ] False starts are broadcasted
+- [ ] Countdown works
+- [ ] Direction and distance to first destination are calculated continously
+- [ ] Once final checkpoint is reached or button is pressed, save time and distance penalty
+- [ ] Direction and distance to final destination are calculated continously
+- [ ] Once final checkpoint is reached, check for scoreboard
+- [ ] Generates scoreboard if first
+- [ ] Receives scoreboard if not
+- [ ] penalties earned are properly applied to time
+- [ ] Scoreboard is populated properly
+- [ ] Scoreboard and all data is saved properly
 
 ## Stage 3: Integration
 ### Integration - GPS

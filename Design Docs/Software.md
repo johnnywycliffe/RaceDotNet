@@ -11,38 +11,38 @@ Main menu will display options one at a time, with arrows indicating up and down
 
 Menu selection
 - Point-to-Point
- - Pick location from saved
-  - display list of locations
- - Pick location from phone
-  - display list of locations
- - Pick location from recently used
-  - display list of locations
+  - Pick location from saved
+    - display list of locations
+  - Pick location from phone
+    - display list of locations
+  - Pick location from recently used
+    - display list of locations
 - Drag
- - 1 Driver
- - 2 Driver
+  - 1 Driver
+  - 2 Driver
 - Course
- - Setup
- - Run
+  - Setup
+  - Run
 - Sprint
- - Setup
- - Run
+  - Setup
+  - Run
 - Random location
 - Stats
 - Driver profile
- - View profile
- - Edit profile
- - Save/load profile
-  - Save current
-  - Load from SD
-  - Load from Phone
- - Erase profile
+  - View profile
+  - Edit profile
+  - Save/load profile
+    - Save current
+    - Load from SD
+    - Load from Phone
+  - Erase profile
 - Options
- - Set units
-  - Miles/km
-  - 12 or 24 hour
- - Passive Data logging mode
- - Clear data
- - Password protect
+  - Set units
+    - Miles/km
+    - 12 or 24 hour
+  - Passive Data logging mode
+  - Clear data
+  - Password protect
 
 ### Input handler
 A non-blocking selection tool needs to be present, that scans the potentiometer input from the joystick and button status when any selection is being made.
@@ -126,6 +126,15 @@ Once a password has been provided, the device cannot be used without logging in 
 
 Stored information probably needs to be at least slightly obfuscated to avoid casual inspection of the SD card.
 
+### Checkpoints
+Checkpoints have a default distance of about 25 feet. This means any GPS reading inside this will be accepted as having been at that location. This radius can be changed.
+
+At high speeds, this may not be enough. GPS data is sampled at 10Hz, and a vehicle moving at ~100 MPH covers ~150 feet per second, so the GPS is sampling every 15 feet. If the vehicle travels off of the center of the circle, there is a chance that the Checkpoint could be skipped, which would suck.
+
+To avoid this, if the **Direction to waypoint** is suddenly greater than 90 degrees between two readings, average out the readings and see if checkpoint is activated. This means driving off to the side of the checkpoint can still miss the checkpoint, but it won't be possible to undersample GPS data.
+
+Similarly, for Drag racing, the start position is averaged during the setup phase to get as accurate as possible, then a sample is taken every tenth of a second. Once a measurement from >1/4 mile is taken, that last measurement is checked against the last measurement before 1/4 mile and math is done to find the actual 1/4 mile position.
+
 ## Events
 Types of events a driver may initiate.
 
@@ -142,30 +151,30 @@ If there's only one driver, some of the code will skip since it doesn't make sen
 #### High level
 Initiating driver:
 1. Obtain Coordinates 
- 1. Load from SD
- 2. Load from Cell Phone (WiFI/Bluetooth)
- 3. Load from Recents
+  1. Load from SD
+  2. Load from Cell Phone (WiFI/Bluetooth)
+  3. Load from Recents
 2. Choose start time
 3. Choose setup time
 4. Choose participation (Initiating driver may opt out, in case of camera car or event organizer)
 5. Broadcast location and start time to other drivers.
 6. Listen for Acks from other drivers until setup time initiates. Timer displayed on screen to indicate time until setup starts.
- - Timer may be cancelled, and will send cancellation to all other units in area.
+  - Timer may be cancelled, and will send cancellation to all other units in area.
 7. During Setup time car is allowed to move. Timer is displayed, indicating time until cars must stop moving.
- - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
+  - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
 8. LEDs turn Red, indicating race is about to start. Car must not move or will earn false start. False starts are broadcasted. Screen transitions to arrow.
 9. LEDs turn Yellow, then Green to start race.
 10. Move to "All drivers (While racing)"
 
 Receiving driver(s):
 1. Once message is received, ask driver to accept or reject event
- 1. On reject, return to normal operation
- 2. On accept, continue
+  1. On reject, return to normal operation
+  2. On accept, continue
 2. Send join message back to Initiator informing of intent to join
 3. Timer continues to count down until setup time.
- - Timer may be cancelled, and will send cancellation to Initiator. 
+  - Timer may be cancelled, and will send cancellation to Initiator. 
 4. During Setup time car is allowed to move. Timer is displayed, indicating time until cars must stop moving.
- - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
+  - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
 5. LEDs turn Red, indicating race is about to start. Car must not move or will earn false start. False starts are broadcasted. Screen transitions to arrow.
 6. LEDs turn Yellow, then Green to start race.
 7. Move to "All drivers (While racing)"
@@ -173,15 +182,15 @@ Receiving driver(s):
 All drivers (While racing):
 1. Get GPS coordinates
 2. Compare with destination
- - If at destination, move to "On Arrival"
+  - If at destination, move to "On Arrival"
 3. Obtain current heading.
 4. Display heading and distance remaining on screen
 5. Allow driver to abort, returning to normal mode. Broadcast "Backed out" message.
 
 On Arrival:
 1. Send message asking for scoreboard
- 1. If no scoreboard received within "reasonable" time/attempts, move to "First arrival"
- 2. Otherwise, receive scoreobard and move to "All following drivers"
+  1. If no scoreboard received within "reasonable" time/attempts, move to "First arrival"
+  2. Otherwise, receive scoreobard and move to "All following drivers"
 
 First arrival:
 1. Create scoreboard
@@ -214,8 +223,32 @@ All following drivers:
 Allows one or two drivers to compete in a limited speed challenge.
 
 #### Description
+One or two people line up at a start line, and the device gives a countdown. For the next quarter mile, the drvier(s) go as fast as they can. Once the  1/4 mile is up, The device indicates to slow down.
+
+Drags can be sent as a challenge to another driver, or letting the first respondant from the general vicinity apply.
+
+Afterwards, data is processed to give the best representation of the Drag as possible.
+
 #### High level
+Initiating Driver:
+1. Drag is initialized
+2. Wait for confirmation from target driver or any other driver in the area.
+3. Drivers are allowed to set up, pressing button 1 when ready.
+4. After setup time is over, a random amount of time between 3-10 seconds is given to avoid anticipation.
+5. A quick countedown using the LEDs is produced.
+6. A false start is "awarded" if driver is in motion before go
+7. Save every GPS signal, adding distance traveled (Not straight-line, but from point to point because real roads are curvy)
+8. Once Distance is greater the 1/4 mile, signal drivers to slow down and stop.
+9. Math is done to calculate all of the relevant data.
+10. Data is show to driver, winner is displayed.
+11. Data is saved.
+
 #### Data saved to SD
+1. Participants
+2. All GPS data used to average the start of the drag
+3. All GPS data during Drag.
+4. Math results
+5. Scores for each driver.
 
 ### Course
 A full loop of a course, with checkpoints that must be hit. Can be multiple laps.
@@ -235,9 +268,9 @@ If a course is run multiple times, times can be compared.
 Course generation:
 1. Start generation
 2. Until button 2 is pressed, continue to loop the following:
- 1. Display coordinates of location and distance from previous checkpoint (first point is exception)
- 2. Each time button 1 is pressed, add location as a checkpoint
- 3. Checkpoint size maybe be adjusted. Minimum size is 15 feet, but 20-30 feet is recommended. 
+  1. Display coordinates of location and distance from previous checkpoint (first point is exception)
+  2. Each time button 1 is pressed, add location as a checkpoint
+  3. Checkpoint size maybe be adjusted. Minimum size is 15 feet, but 20-30 feet is recommended. 
 3. Once course is set up, driver is asked to name course.
 4. course is saved to SD.
 
@@ -250,16 +283,27 @@ Course editing:
 
 Initiating driver:
 1. Driver picks course.
+2. Course is sent to all drivers in area.
+3. Wait for incoming signals from other drivers
+4. Once signup period is over, setup begins
+5. Line up behind start line
+6. Wait for go and people to start moving in front of you
 
 Other drivers:
+1. Respond back affimative to initiating driver
+2. Once signup period is over, setup begins
+3. Line up behind start line
+4. Wait for go and people to start moving in front of you
 
 During event:
-1. 
+1. GPS arrow points towards next checkpoint, gives distance.
+2. Records time to reach each checkpoint
+3. check if a lap has been completed, and if so, if final lap is completed.
 
 On finish:
 1. Send message asking for scoreboard
- 1. If no scoreboard received within "reasonable" time/attempts, move to "First to finish"
- 2. Otherwise, receive scoreobard and move to "All following drivers"
+  1. If no scoreboard received within "reasonable" time/attempts, move to "First to finish"
+  2. Otherwise, receive scoreobard and move to "All following drivers"
 
 First to finish:
 1. Create scoreboard
@@ -302,9 +346,9 @@ Sprints can be run multiple times, and a driver can compare runs.
 Sprint generation:
 1. Start generation
 2. Until button 2 is pressed, continue to loop the following:
- 1. Display coordinates of location and distance from previous checkpoint (first point is exception)
- 2. Each time button 1 is pressed, add location as a checkpoint
- 3. Checkpoint size maybe be adjusted. Minimum size is 15 feet, but 20-30 feet is recommended. 
+  1. Display coordinates of location and distance from previous checkpoint (first point is exception)
+  2. Each time button 1 is pressed, add location as a checkpoint
+  3. Checkpoint size maybe be adjusted. Minimum size is 15 feet, but 20-30 feet is recommended. 
 3. Once Sprint is set up, driver is asked to name course.
 4. Sprint is saved to SD.
 
@@ -314,6 +358,50 @@ Sprint editing:
 3. Once radius selected, can be adjusted with joystick. Button 1 saves, 2 exits without saving
 4. Sprint can be renamed
 5. Sprint is re-saved once complete
+
+Initiating driver:
+1. Driver picks sprint
+2. sprint is sent to all drivers in area.
+3. Wait for incoming signals from other drivers
+4. Once signup period is over, setup begins
+5. Line up behind start line
+6. Wait for go and people to start moving in front of you
+
+Other drivers:
+1. Respond back affimative to initiating driver
+2. Once signup period is over, setup begins
+3. Line up behind start line
+4. Wait for go and people to start moving in front of you
+
+During event:
+1. GPS arrow points towards next checkpoint, gives distance.
+2. Records time to reach each checkpoint
+3. check if a lap has been completed, and if so, if final lap is completed.
+
+On finish:
+1. Send message asking for scoreboard
+  1. If no scoreboard received within "reasonable" time/attempts, move to "First to finish"
+  2. Otherwise, receive scoreobard and move to "All following drivers"
+
+First to finish:
+1. Create scoreboard
+2. Calculate any penalties assigned, and set as time.
+3. Wait for messages from other drivers asking for scoreboard.
+4. Update times on screen as more drivers roll in.
+5. Listen for "end race" votes. If more than 90% of all drivers initially in race, close race down. "Backed out" drivers are removed from number.
+6. Once all drivers accounted for or vote succeeds, send close race signal.
+7. Save race data (Optional)
+8. Return to normal operation.
+
+All following drivers:
+1. On receipt of scoreboard, copy.
+2. Calculate own time, add penalties, broadcast. Include any "backed out" messages received, penalties noticed.
+3. Display scoreboard.
+4. Update scorboard as required.
+5. Enable "End Race" button. Broadcast vote is selected.
+6. When "End race" signal received, continue.
+7. Save race data (Optional)
+8. Return to normal operation.
 
 #### Data saved to SD
 1. Sprint (Checkpoints, name)
@@ -341,22 +429,22 @@ Initiating driver:
 4. Choose participation (Initiating driver may opt out, in case of camera car or event organizer)
 5. Broadcast location and start time to other drivers.
 6. Listen for Acks from other drivers until setup time initiates. Timer displayed on screen to indicate time until setup starts.
- - Timer may be cancelled, and will send cancellation to all other units in area.
+  - Timer may be cancelled, and will send cancellation to all other units in area.
 7. During Setup time car is allowed to move. Timer is displayed, indicating time until cars must stop moving.
- - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
+  - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
 8. LEDs turn Red, indicating race is about to start. Car must not move or will earn false start. False starts are broadcasted. Screen transitions to arrow.
 9. LEDs turn Yellow, then Green to start race.
 10. Move to "All drivers (While racing)"
 
 Receiving driver(s):
 1. Once message is received, ask driver to accept or reject event
- 1. On reject, return to normal operation
- 2. On accept, continue
+  1. On reject, return to normal operation
+  2. On accept, continue
 2. Send join message back to Initiator informing of intent to join
 3. Timer continues to count down until setup time.
- - Timer may be cancelled, and will send cancellation to Initiator. 
+  - Timer may be cancelled, and will send cancellation to Initiator. 
 4. During Setup time car is allowed to move. Timer is displayed, indicating time until cars must stop moving.
- - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
+  - Timer can be cancelled on an individual car basis. Broadcasts "Backed out" to other drivers for scoreboard purposes.
 5. LEDs turn Red, indicating race is about to start. Car must not move or will earn false start. False starts are broadcasted. Screen transitions to arrow.
 6. LEDs turn Yellow, then Green to start race.
 7. Move to "All drivers (While racing)"
@@ -364,7 +452,7 @@ Receiving driver(s):
 All drivers (While racing):
 1. Get GPS coordinates
 2. Compare with checkpoint
- - If button 2 is pressed, go to "Return"
+  - If button 2 is pressed, go to "Return"
 3. Obtain current heading.
 4. Display heading and distance remaining on screen
 5. Allow driver to abort, returning to normal mode. Broadcast "Backed out" message.
@@ -372,15 +460,15 @@ All drivers (While racing):
 Return:
 1. Get GPS coordinates
 2. Compare with initial position
- - If location match, move to "On Arrival"
+  - If location match, move to "On Arrival"
 3. Obtain current heading.
 4. Display heading and distance remaining on screen
 5. Allow driver to abort, returning to normal mode. Broadcast "Backed out" message.
 
 On Arrival:
 1. Send message asking for scoreboard
- 1. If no scoreboard received within "reasonable" time/attempts, move to "First arrival"
- 2. Otherwise, receive scoreobard and move to "All following drivers"
+  1. If no scoreboard received within "reasonable" time/attempts, move to "First arrival"
+  2. Otherwise, receive scoreobard and move to "All following drivers"
 
 First arrival:
 1. Create scoreboard
@@ -413,16 +501,45 @@ All following drivers:
 A definition of some classes
 
 ### Checkpoint
-TODO
+- Latitude
+- Longitude
+- ID
+- Next Checkpoint (pointer?)
+- CRC/hash check thing
 
-### Score (Sprint, Course, Point-to-Point)
-TODO
+### Scoreboard (Sprint, Course, Point-to-Point)
+- Array of participant IDs
+- Array of times
+- Array of penalties
+- If race was cancelled before all drivers arrived
+- ID handed out at start of race - for arbitration after the fact.
 
 ### Sprint/Course
-TODO
+- Queue of checkpoints in order
+- Name
+- # of laps (0 or -1 for one-way)
+- CRC/hash type function to make sure the files haven't been changed
 
 ### Drag Score
-TODO
+- Participant IDs
+- Averaged starting position
+- Calculated 1/4 mile
+- 0-60 time
+- 0-100 time
+- 1/8 mile
+- Speed at 1/8 mile
+- 1/4 mile
+- Speed at 1/4 mile
+- 1000'
+- Speed at 1000'
+- Other driver's stats 
+
+## Penalties
+- False Start
+- Bad Police Ping
+- Missed Checkpoint
+- Dropped out voluntarily
+- Distance from target (random only)
 
 
 

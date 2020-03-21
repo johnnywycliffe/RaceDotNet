@@ -14,6 +14,7 @@ A folder containing all of the required libraries is included in the "Libraries"
 ## Links
 ### NRF24 
 [NRF24 communication guide](https://medium.com/@benjamindavidfraser/arduino-nrf24l01-communications-947e1acb33fb)
+
 ['Multiceiver' mode](https://electronics.stackexchange.com/questions/102715/broadcast-in-nrf24l01)
 
 ### OLED
@@ -24,6 +25,7 @@ A folder containing all of the required libraries is included in the "Libraries"
 
 ### ESP32
 [ESP32 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
+
 [Possible hash function for encryption](https://github.com/esp8266/Arduino/blob/master/libraries/Hash/src/Hash.h)
 
 ### GPL 2.1
