@@ -20,7 +20,7 @@ Race.Net integrates with cellphones, allowing for exporting of data and selectin
 
 ## Project Status
 As of 2020-3-17, hardware has been ordered for two test units. See Checklist.md for more details.
-As of 2020-3-18, software hasn't been started.
+As of 2020-3-20, software is veing defined in pseudocode
 
 ## Future considerations
 - Once prototyping is done, a custom PCB could be printed an manufactured to allow for smaller form factor and reduced price.
