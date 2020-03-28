@@ -15,16 +15,16 @@ This document is to give a general idea of the statue of individual modules and 
 ### Screen
 - [x] Selection of part
 - [x] Part ordered
-- [ ] Part received
-- [ ] Part assembled
+- [x] Part received
+- [x] Part assembled
 - [ ] pinout defined
-- [ ] Libraries installed
-- [ ] Screen can display without issues
+- [x] Libraries installed
+- [x] Screen can display without issues
 
 ### GPS unit
 - [x] Selection of part
 - [x] Part ordered
-- [ ] Part received
+- [x] Part received
 - [ ] Part assembled
 - [ ] pinout defined
 - [ ] Libraries installed
@@ -33,8 +33,8 @@ This document is to give a general idea of the statue of individual modules and 
 ### NRF24 transceiver
 - [x] Selection of part
 - [x] Part ordered
-- [ ] Part received
-- [ ] Part assembled
+- [x] Part received
+- [X] Part assembled
 - [ ] pinout defined
 - [ ] Libraries installed
 - [ ] Two unis can communicate back and forth
@@ -61,7 +61,7 @@ This document is to give a general idea of the statue of individual modules and 
 ### Power supply
 - [x] Selection of parts
 - [x] Parts ordered
-- [ ] Parts received
+- [x] Parts received
 - [ ] Parts assembled
 
 ## Stage 2: Module functionality
@@ -70,7 +70,7 @@ This document is to give a general idea of the statue of individual modules and 
 - [x] Define Mode - Course
 - [x] Define Mode - Drag
 - [x] Define Mode - Sprint
-- [x]] Define Mode - Random point
+- [x] Define Mode - Random point
 - [x] Define functionality - Cop ping
 - [x] Define functionality - Driver stats
 - [ ] Define data transmission structure

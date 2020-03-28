@@ -500,6 +500,8 @@ All following drivers:
 ## Classes
 A definition of some classes
 
+### Driver profile
+
 ### Checkpoint
 - Latitude
 - Longitude
@@ -535,11 +537,25 @@ A definition of some classes
 - Other driver's stats 
 
 ## Penalties
+Can be saved as an 8 bit number. Bit shift them to be flags.
+
 - False Start
 - Bad Police Ping
 - Missed Checkpoint
 - Dropped out voluntarily
 - Distance from target (random only)
 
+Random will need to stare distance as a variables
 
+## Main Functions
+TODO
+
+## Network scheme
+TODO
+
+## File scheme
+TODO 
+
+## Webapp
+TODO
 

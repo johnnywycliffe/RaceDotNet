@@ -17,6 +17,10 @@ A folder containing all of the required libraries is included in the "Libraries"
 
 ['Multiceiver' mode](https://electronics.stackexchange.com/questions/102715/broadcast-in-nrf24l01)
 
+[More multibroadcast stuff](https://forum.arduino.cc/index.php?topic=261258.0)
+
+[Airspayce library](http://airspayce.com/mikem/arduino/NRF24/)
+
 ### OLED
 [Adafruit OLED tutorial](https://learn.adafruit.com/monochrome-oled-breakouts/arduino-library-and-examples)
 
@@ -27,6 +31,12 @@ A folder containing all of the required libraries is included in the "Libraries"
 [ESP32 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
 
 [Possible hash function for encryption](https://github.com/esp8266/Arduino/blob/master/libraries/Hash/src/Hash.h)
+
+[Vudeo tutorials for EPS32](https://www.youtube.com/watch?v=lIxs7WG1j-U&list=PLfPtpZzK2Z_QO8snrdnRTTNtQvLw35Zfc)
+
+[Pinout and some basics](https://circuits4you.com/2018/12/31/esp32-devkit-esp32-wroom-gpio-pinout/)
+
+[Tasks (this one is important)](https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/)
 
 ### GPL 2.1
 [Attributions from libraries used](https://opensource.stackexchange.com/questions/6622/lgpl-2-1-attributions-required)
