@@ -2,13 +2,11 @@
 A list of all the required libraries and links to resources used to get Race.Net working.
 
 ## Libraries
-A folder containing all of the required libraries is included in the "Libraries" folder for ease of access.
 
 | Library | Version | Used for | License |
 | --- | --- | --- | --- |
 | [TinyGPSPlus](https://github.com/mikalhart/TinyGPSPlus) |  | GPS NMEA interpretation | LGPL 2.1 or later |
-| [Adafruit_GFX](https://github.com/adafruit/Adafruit-GFX-Library) |  | Screen draw functions | BSD |
-| [Adafruit_SSD1306](https://github.com/adafruit/Adafruit_SSD1306) |  | Interface to GFX library | BSD |
+| [ESP2866 OLED](https://github.com/ThingPulse/esp8266-oled-ssd1306) | 4.1.0 | SPI Screen | MIT |
 
 
 ## Links
@@ -21,22 +19,29 @@ A folder containing all of the required libraries is included in the "Libraries"
 
 [Airspayce library](http://airspayce.com/mikem/arduino/NRF24/)
 
-### OLED
-[Adafruit OLED tutorial](https://learn.adafruit.com/monochrome-oled-breakouts/arduino-library-and-examples)
+[Another RF24 library](https://github.com/nRF24/RF24)
 
 ### SD Card
 [Arduino SD docs](https://www.arduino.cc/en/reference/SD)
 
+[SDConfigFile](https://github.com/bneedhamia/sdconfigfile)
+
 ### ESP32
 [ESP32 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
 
+[ESP documentation](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html)
+
 [Possible hash function for encryption](https://github.com/esp8266/Arduino/blob/master/libraries/Hash/src/Hash.h)
 
-[Vudeo tutorials for EPS32](https://www.youtube.com/watch?v=lIxs7WG1j-U&list=PLfPtpZzK2Z_QO8snrdnRTTNtQvLw35Zfc)
+[Video tutorials for EPS32](https://www.youtube.com/watch?v=lIxs7WG1j-U&list=PLfPtpZzK2Z_QO8snrdnRTTNtQvLw35Zfc)
 
-[Pinout and some basics](https://circuits4you.com/2018/12/31/esp32-devkit-esp32-wroom-gpio-pinout/)
+[Tasks (this one is important)](https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/) 
 
-[Tasks (this one is important)](https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/)
+[ESP-NOW](https://randomnerdtutorials.com/esp-now-esp32-arduino-ide/)
+
+[ESP now docs](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_now.html)
+
+[MAC spoofing](https://randomnerdtutorials.com/get-change-esp32-esp8266-mac-address-arduino/)
 
 ### GPL 2.1
 [Attributions from libraries used](https://opensource.stackexchange.com/questions/6622/lgpl-2-1-attributions-required)

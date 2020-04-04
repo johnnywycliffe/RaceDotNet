@@ -43,6 +43,9 @@ Menu selection
   - Passive Data logging mode
   - Clear data
   - Password protect
+- About
+  - licenses for 3rd party libraries
+  - developer name
 
 ### Input handler
 A non-blocking selection tool needs to be present, that scans the potentiometer input from the joystick and button status when any selection is being made.
@@ -497,10 +500,19 @@ All following drivers:
 4. Time
 5. Penalties earned
 
-## Classes
-A definition of some classes
+## Classes/Structs
+A definition of some classes or structs. Probably mostly structs.
 
 ### Driver profile
+- Driver ID (Device MAC?)
+- Driver display ID
+- Car Make
+- Car Model
+- Car Color
+- Best 0-60
+- Best 1/4 time
+- Top speed
+- Best 1000'
 
 ### Checkpoint
 - Latitude
@@ -517,9 +529,11 @@ A definition of some classes
 - ID handed out at start of race - for arbitration after the fact.
 
 ### Sprint/Course
+Note: Since sprints are just courses with one lap, Point-to-points are just sprints with only two nodes, randoms are just point-to-points with a loop condition of 1 lap, this can be used for everything EXCEPT drag racing.
+
 - Queue of checkpoints in order
 - Name
-- # of laps (0 or -1 for one-way)
+- # of laps (0 for non-looping)
 - CRC/hash type function to make sure the files haven't been changed
 
 ### Drag Score
@@ -548,13 +562,115 @@ Can be saved as an 8 bit number. Bit shift them to be flags.
 Random will need to stare distance as a variables
 
 ## Main Functions
-TODO
+In here are the functions used to build up the program, in no particular order. The high level stuff above should be able to be largly replced with these functions.
+
+### raceInit()
+Used for all races. 
+
+- gets settings from user (type of race, setup time, race settings, max participants, etc)
+- broadcasts settings to vehicles in vicinity. Include course file.
+  - sets self out of receive mode and into broadcast node.
+- adds participants as acknoleges are received
+  - May be allowed to choose participants
+  - backOut() w/out penalty should be available
+- once ack time elapses, switch to setup time.
+  - during setup time, everyone is given a copy of the participants list.
+  - backOut() should be available
+- countdown()
+
+### countdown()
+Handles the start of a race, coordinating LEDS
+
+- Given a start time and countdown time (5 sec standard)
+- calc and store 4 seconds before start time as prestart time
+- on timer(), flash LEDS in red-yellow-yellow-yellow pattern, one each second.
+- on timer(), Green should occur on start time, and should hold until driver starts moving.
+- startRace()
+
+### timer()
+Handles all countdown timers, like setup time, ack time, countdowns
+
+- receives a time
+- checks if time has been reached.
+- if not, reports back seconds until time is reached
+
+### whileRacing()
+What device does while racing (Excluding drag)
+
+- Check location
+- if location isn't at checkpoint, calc distance and direction to checkpoint
+- if location is at checkpoint, save time and look for next checkpoint
+- if no more checkpoints, cosider race finished.
+- policePing() should be available
+- backOut() should be available
+
+### startRace()
+Handles all of the race starting things
+
+- Records race start time
+- Waits for car to start moving
+  - Records time car started to move
+- whileRacing()
+
+### backOut()
+Allows a user to remove themselves from the scoreboard voluntarily. If done during ack phase (maybe setup too) it doesn't create a penalty.
+
+- Gets whether should be penalized or not
+- Checks if user has received button 2
+- confirms backing out with second button press within 5 seconds
+- sends message to host to remove from scoreboard. if host 
 
 ## Network scheme
 TODO
 
 ## File scheme
-TODO 
+### Saving/loading from SD
+Saving the structs to a file should be done like this:
+
+SD.printf("#ID:%s",profile.id);
+SD.printf("#NAME:%s",profile.name);
+
+Reading files something like this:
+
+{
+  char line[25];
+  char *ptr = strchr(line, ':');
+  if(ptr == NULL)
+  {
+    // error, no colon
+  }
+  else
+  {
+    *ptr = '\0';
+    ptr++;
+    if(strcmp(line, "#NAME") == 0)
+    {
+      strcpy(data.name, ptr);
+    }
+    else if(strcmp(line, "#ID") == 0)
+    {
+      data.ID = atoi(ptr);
+    }
+  }
+
+### File Structure
+SD cards (in arduino environs) work with 8.3 file names, like DOS. 
+
+| File | Ext. | Main Folder | Naming Convention | Example |
+| ---- | ---- | ----------- | ----------------- | ------- |
+| Profile | .prf | /profiles/user/ | profile display name | JEREMYST.prf |
+| Friends | .prf | /profiles/friends/ | profile display name | TOFUMAN1.prf |
+| Course | .crs | /race/course/name/ | 5 digits of name, 3 digit number auto generated | GDNST003.crs |
+| Sprint | .spr | /race/sprint/name/ | 5 digits of name, 3 digit number auto generated | NEATS035.spr |
+| Point-to-Point | .p2p | /race/p2p/name/ | 5 digits of name, 3 digit number auto generated | POINT001.p2p |
+| Random | .rnd | /race/random/name/ | date (YYMMDD) + 2 digits for individual run  | 20070304.rnd |
+| Score/results | .res | ../name/ | date (YYMMDD) + 2 digits for individual run | 20041501.res |
+| Drag results | .drg | /race/drag/ | date (YYMMDD) + 2 digits for individual run | 20122506.drg |
+| Locations | .loc | /locations/ | 8 chars of name | TRDINER2.loc |
+
+Inside each folder there are subfolders per race type for saving courses and multiple runs. For example:
+
+A course called "GDNST003.crs" would be in "/course/GDNST003/". All scoreboards associated with the course (.res) are included in the folder for organizational purposes.
 
 ## Webapp
 TODO

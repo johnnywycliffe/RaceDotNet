@@ -66,22 +66,39 @@ This base package comes to a cost of ~$36.35
 ## Configuration selection considerations:
 - ESP32 is 3.3v ONLY. No 5v applications.
 - With the unit requiring 3.3.v, a 3.7v LiPo could be used, but since almost every car has 12v socket or usb ports, a direct wire is cheaper. A liPo charger may be considered in the future.
-- While up to 10 LEDs could be attahced, pin count becomes a problem. Several may need to be on one circuit. Also, depending on voltage required
+- While up to 10 LEDs could be attached, pin count becomes a problem. Several may need to be on one circuit.
 - In leau of a screen, the ESP32 has a WiFI/Bluetooth module built in that could be used to control device
 - OLED, while inexpensive, is small. It's not supposed to provide massive amounts of information, but it could be inconvenient.
 - LCD Touch screen is expensive, but is larger and touch functionality can be used to control the device.
 - Joystick and buttons needed for efficient navigation of menus for OLED
 - Keep hardware in the $30-$50 range if possible
+- Might need to grab a multiplexer for the LEDs
+- LEDs and screen should be dimmable, probably through pots.
+
+###A Note on wireless transmission
+ESP32's can communicate directly to each other using the WiFi module. They can allow up to 20 simultaneus connections in multi-slave mode, making it easy to connect everything. Just can't be using the WiFi module at the same time. Thus, assuming that they can connect to arbitrary devices these would work better than the 6 channels from the NRF24, and also cut some of the cost down. 
+
+As of writing this, I'm having a bit of trouble figuring out how each device finds each other and links up. Once I determine if it will connect without oreviously being paired, I can move forward with ESP Now instead of NRF24.
 
 ## Current configuration being developed.
 OLED Drag + SD
 
 ## ESP32 pinout
-TBD
+[Pinout and some basics](https://circuits4you.com/2018/12/31/esp32-devkit-esp32-wroom-gpio-pinout/)
 
-## Circuit diagram
-TBD
+## Circuit diagram/pinout
+### SPI pinout
+MOSI - 23  
+MISO - 19  
+CLK  - 18  
 
+### SPI Screen pinout (Not final)
+CS - 4  
+D/C - 2  
+RESET - 5  
+
+### SD Card Reader Pinout (SPI) (Not Final)
+CS - 15  
 
 
 

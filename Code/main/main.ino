@@ -10,18 +10,13 @@
 
 //External libraries
 //Screen
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include "SSD1306Spi.h"
 
 //Defines
 //Screen
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-#define OLED_MOSI   9
-#define OLED_CLK   10
-#define OLED_DC    11
-#define OLED_CS    12
-#define OLED_RESET 13
+#define OLED_DC    2
+#define OLED_CS    4
+#define OLED_RESET 5
 
 //Display
 #define TEXT_V_SMALL 8
@@ -49,12 +44,16 @@
 //#define DEADZONE_HI 768
 //#define DEADZONE_LO 256
 
+//LEDs - common cathode, when pin set HIGH, led is OFF
+#define LED_PIN_RED 9
+#define LED_PIN_GRN 10
+#define LED_PIN_BLU 11
+
 //State
 #define MENU 0
 
 //Initialization
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
-  OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+SSD1306Spi  display(5, 2, 4);
 
 //Globals
 //Main
@@ -62,7 +61,7 @@ int8_t state = 0;
       
 void setup() {
   Serial.begin(9600);
-  if(!display.begin(SSD1306_SWITCHCAPVCC)) { // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if(!display.init()) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }

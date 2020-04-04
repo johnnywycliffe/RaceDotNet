@@ -2,7 +2,7 @@
 
 //Handles drawing menu and getting inputs to make selection
 //TODO: Make into task, so does not block GPS or NRF24
-int8_t menu(char menuARR[], int8_t arrSize, int8_t textLength, int8_t prev) {
+int8_t menu(const char menuARR[], int8_t arrSize, int8_t textLength, int8_t prev) {
   bool updateScreen = false;
   bool selection = false;
   int8_t currSelection = prev;
@@ -29,6 +29,7 @@ int8_t menu(char menuARR[], int8_t arrSize, int8_t textLength, int8_t prev) {
   if (input & INPUTMASK_BUTTON2||input & INPUTMASK_LEFT){
     return -1;
   }
+  //Setup drawn elements
   char title[textLength] = {currSelection*textLength};
   bool up = true;
   bool down = true;
@@ -68,13 +69,13 @@ bool setBool(char item, bool setting){
 }
 
 void mainMenu(int8_t prevSelection){
-  char mainmenu = "P-2-P     "
+  const char* mainmenu = "P-2-P     "
                   "DRAG RACE "
                   "OPTIONS   ";
   int8_t output = menu(mainmenu,3,10,prevSelection);
   switch(output){
     case -1: //Reset menu
-      output = menu(mainmenu,3,10,prevSelection);
+      //output = menu(mainmenu,3,10,prevSelection);
       break;
     case 0:
       //go to point-to-point submenu

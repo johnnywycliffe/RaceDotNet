@@ -7,10 +7,10 @@ This document is to give a general idea of the statue of individual modules and 
 ### Microcontroller
 - [x] Selection of part
 - [x] Part ordered
-- [ ] Part received
-- [ ] Part assembled
-- [ ] Libraries installed, communicating with programming computer
-- [ ] Sample code runs
+- [x] Part received
+- [x] Part assembled
+- [x] Libraries installed, communicating with programming computer
+- [x] Sample code runs
 
 ### Screen
 - [x] Selection of part
@@ -40,21 +40,21 @@ This document is to give a general idea of the statue of individual modules and 
 - [ ] Two unis can communicate back and forth
 
 ### Accelerometer
-- [ ] Selection of part
-- [ ] Part ordered
-- [ ] Part received
-- [ ] Part assembled
+- [x] Selection of part
+- [x] Part ordered
+- [x] Part received
+- [x] Part assembled
 - [ ] pinout defined
 - [ ] Libraries installed
 - [ ] Accelerometer data can be correctly read.
 
 ### SD Card reader
-- [ ] Selection of part
-- [ ] Part ordered
-- [ ] Part received
-- [ ] Part assembled
+- [x] Selection of part
+- [x] Part ordered
+- [x] Part received
+- [x] Part assembled
 - [ ] pinout defined
-- [ ] Libraries installed
+- [X] Libraries installed
 - [ ] Data can be written to SD card
 - [ ] Data can be read off of SD card
 
@@ -74,8 +74,8 @@ This document is to give a general idea of the statue of individual modules and 
 - [x] Define functionality - Cop ping
 - [x] Define functionality - Driver stats
 - [ ] Define data transmission structure
-- [ ] Define data file scheme
-- [ ] Define classes
+- [x] Define data file scheme
+- [ ] Define classes/structs
 - [ ] Define main functions
 - [ ] Define WebApp/App
 
