@@ -1,90 +1,50 @@
-//Menus
-
 //Handles drawing menu and getting inputs to make selection
-//TODO: Make into task, so does not block GPS or NRF24
-int8_t menu(const char menuARR[], int8_t arrSize, int8_t textLength, int8_t prev) {
-  bool updateScreen = false;
-  bool selection = false;
-  int8_t currSelection = prev;
-  //Get input and handle
-  int8_t input = getInput6Button();
-  while(input == 0){input = getInput6Button();} //Waits for input before  advancing
-  if (input & INPUTMASK_UP){
-    currSelection--;
-    updateScreen = true;
-    if (selection < 0){
-      currSelection = 0;
+int8_t input(int8_t &sel, int8_t arrLen){
+  int8_t in = 0;
+  while(in == 0){in = getInput6Button();} //Wait for input
+  if (bitRead(in,BUP) == 1){
+    sel--;
+    if (sel < 0){
+      sel = 0;
     }
+    return sel;
   }
-  if (input & INPUTMASK_DOWN){
-    currSelection++;
-    updateScreen = true;
-    if (selection > (arrSize)){
-      currSelection = (arrSize);
+  else if (bitRead(in,BDOWN) == 1){
+    sel++;
+    if (sel >= (arrLen)){
+      sel = (arrLen);
     }
+    return sel;
   }
-  if (input & INPUTMASK_BUTTON1||input & INPUTMASK_RIGHT){
-    return currSelection;
+  else if (bitRead(in,BUTTON1) == 1 || bitRead(in,BRIGHT) == 1){
+    return -2;
   }
-  if (input & INPUTMASK_BUTTON2||input & INPUTMASK_LEFT){
+  else if (bitRead(in,BUTTON2) == 1||bitRead(in,BLEFT) == 1){
     return -1;
   }
-  //Setup drawn elements
-  char title[textLength] = {currSelection*textLength};
-  bool up = true;
-  bool down = true;
-  if (currSelection == 0){
-    up = false;
-  }
-  if (currSelection == arrSize){
-    down = false;
-  }
-  if (updateScreen){
-    drawMenuScreen(title, up, down);
-  }
 }
-
-//Used to set a boolean value
-bool setBool(char item, bool setting){
-  bool updateScreen = false;
-  bool selection = setting;
-  //Get input and handle
-  int8_t input = getInput6Button();
-  while(input == 0){input = getInput6Button();}
-  if (input & INPUTMASK_UP){
-    selection = false;
-    updateScreen = true;
-  }
-  if (input & INPUTMASK_DOWN){
-    selection = true;
-    updateScreen = true;
-  }
-  if (input & INPUTMASK_BUTTON1||input & INPUTMASK_RIGHT){
-    return selection; //Returns new value
-  }
-  if (input & INPUTMASK_BUTTON2||input & INPUTMASK_LEFT){
-    return setting; //Returns previous value
-  }
-  //drawOption();
-}
-
-void mainMenu(int8_t prevSelection){
-  const char* mainmenu = "P-2-P     "
-                  "DRAG RACE "
-                  "OPTIONS   ";
-  int8_t output = menu(mainmenu,3,10,prevSelection);
+int8_t notmenu(int8_t selector, MenuItem* arr, int8_t arrLen){
+  int8_t output = input(selector,arrLen);
   switch(output){
-    case -1: //Reset menu
-      //output = menu(mainmenu,3,10,prevSelection);
+    case -2: //Selection made
+      arr[selector].funcPtr("BLARGH");
       break;
-    case 0:
-      //go to point-to-point submenu
+    case -1: //Back button
+      
       break;
-    case 1:
-      //go to drag race submenu
-      break;
-    case 2:
-      //go to options submenu
+    default: //Update screen
+      String dTitle = arr[selector].title;
+      String dSubtitle = arr[selector].subtitle;
+      bool upArrow = true;
+      bool downArrow = false;
+      if (selector = 0){
+        upArrow = false;
+      }
+      if (selector = arrLen){
+        downArrow = false;
+      }
+      drawMenuScreen(dTitle,dSubtitle, upArrow, downArrow);
       break;
   }
+  return selector;
 }

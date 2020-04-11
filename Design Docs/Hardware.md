@@ -2,10 +2,9 @@
 This file describes the hardware implementation, lists items used, pinouts, etc.
 
 ## Basic Functionality:
-- Microcontroller
+- Microcontroller (Inlcudes WiFi antenna)
 - GPS: For positioning car
 - Screen: For data display
-- NRF24 communication: For car-car communication
 - Control surface (Joystick + two buttons)
 
 ## Considered Addons:
@@ -22,7 +21,6 @@ Prices of parts are rounded to the next highest US Dollar value, as of 2020-3-17
 | ---- | ----------------- | ----------------- | -------------- |
 | [ESP32-WROOM-32](https://www.aliexpress.com/item/32864722159.html?aff_platform=product&sk=_dXcHSHv&aff_trace_key=7483e63b98614a10837beee0eaa4dcfa-1584414951423-06960-_dXcHSHv&tmLog=new_Detail_6220&terminal_id=07967cbaec35489d9be0da10ac681656&aff_request_id=7483e63b98614a10837beee0eaa4dcfa-1584414951423-06960-_dXcHSHv) | $4 | 1 | $4 |
 | [Beitian BN-180 GPS Module](https://www.amazon.com/gp/product/B078Y4XZN9/ref=ox_sc_act_title_7?smid=A1GUQD3SRXOFFI&psc=1) | $15 | 1 | $15 |
-| [NRF24 Wireless Transceiver](https://www.amazon.com/gp/product/B06WLH4ZG6/ref=ox_sc_act_title_3?smid=AF7ERVVKLDA4G&psc=1) | $16 | 3 | $5.33 |
 | [3.3v Regulator](https://www.amazon.com/gp/product/B07CP4P5XJ/ref=ox_sc_act_title_1?smid=A323VFV6W4CN1S&psc=1) | $10 | 10 | $1 |
 | [Cig. Lighter plug](https://www.amazon.com/gp/product/B07L9HQ25S/ref=ox_sc_act_title_1?smid=A2ET2G27273OWR&psc=1) | $10 | 2 | $5 |
 | [Assorted PCBs](https://www.amazon.com/gp/product/B07P73X8WS/ref=ox_sc_act_title_5?smid=A2X3UMRR9X7102&psc=1) | $10 | 10 | ~$1 |
@@ -42,24 +40,23 @@ Assorted parts are assumed to cost **less than $5** in total, including resistor
 ## Base configuration:
 1. ESP12-WROOM-32 x 1
 2. GPS unit x 1
-3. NRF24 antenna x 1
-4. 3.3v Regulator x 1
-5. Cigarette lighter plug x 1
-6. PCB x 1
-7. Assorted parts (TBD)
+3. 3.3v Regulator x 1
+4. Cigarette lighter plug x 1
+5. PCB x 1
+6. Assorted parts (TBD)
 
-This base package comes to a cost of ~$36.35
+This base package comes to a cost of ~$31.02
 
 | Name of Config | OLED | Touch LCD | Joystick + buttons | SD package | Microphone/Speaker combo | RGB LEDs | Accelerometer | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Addon cost | $5 | $26 | $1.80 | $4.20* | $6.42 | $0.08 ea | $2.16 | N/A |
-| OLED Basic | x |  | x |  |  |  |  | $43.15 |
-| OLED Drag | x |  | x |  |  | 10 | x | $46.11 |
-| OLED Drag + SD | x |  | x | x |  | 10 | x | $50.31 |
-| OLED All-in-One | x |  | x | x | x | 10 | x | $56.73 |
-| LCD Basic |  | x |  |  |  |  |  |  | $62.35 |
-| LCD Drag |  | x |  |  |  | 10 | x | $65.31 |
-| LCD All-in-One |  | x |  | x | x | 10 | x | $74.53 |
+| OLED Basic | x |  | x |  |  |  |  | $37.82 |
+| OLED Drag | x |  | x |  |  | 10 | x | $40.78 |
+| OLED Drag + SD | x |  | x | x |  | 10 | x | $44.98 |
+| OLED All-in-One | x |  | x | x | x | 10 | x | $51.40 |
+| LCD Basic |  | x |  |  |  |  |  |  | $57.02 |
+| LCD Drag |  | x |  |  |  | 10 | x | $59.98 |
+| LCD All-in-One |  | x |  | x | x | 10 | x | $69.20 |
 
 *Touchscreen LCD comes with SD card reader, meaning it only costs as much as the SD card, or $2.80
 
@@ -74,11 +71,10 @@ This base package comes to a cost of ~$36.35
 - Keep hardware in the $30-$50 range if possible
 - Might need to grab a multiplexer for the LEDs
 - LEDs and screen should be dimmable, probably through pots.
+- SD card reader turns out to be overkill, can't run on 5v. Had to hack the regulator off with pliers. Maybe just buy a solderable socket?
 
 ###A Note on wireless transmission
-ESP32's can communicate directly to each other using the WiFi module. They can allow up to 20 simultaneus connections in multi-slave mode, making it easy to connect everything. Just can't be using the WiFi module at the same time. Thus, assuming that they can connect to arbitrary devices these would work better than the 6 channels from the NRF24, and also cut some of the cost down. 
-
-As of writing this, I'm having a bit of trouble figuring out how each device finds each other and links up. Once I determine if it will connect without oreviously being paired, I can move forward with ESP Now instead of NRF24.
+ESP32's can communicate directly to each other using the WiFi module. They can allow up to 20 simultaneus connections in multi-slave mode, making it easy to connect everything. Just can't be using the WiFi module at the same time.
 
 ## Current configuration being developed.
 OLED Drag + SD

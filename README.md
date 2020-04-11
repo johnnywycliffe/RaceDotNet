@@ -1,7 +1,7 @@
 # Race.Net
 Have you ever played Need For Speed Underground and wished you could pull up to that sweet muscle car you see on your morning commute and challenge him to a drag race? Now you can! With Race.Net (pronounced RaceNet) you can effortlessly engage with other drivers.
 
-Utilizing a GPS receiver and an NRF24 transceiver mounted to a ESP32-WROOM-32 board, the Race.net is designed to draw minimal power while still providing several essential functions for car groups. The NRF antenna allows the vehicles to share data in a way not seen before, sharing waypoints and driver profiles at up to a 1/4 mile away, meaning everyone in a parking lot will be able to get the message without needing to text the address tons of times, or setting up a unique group each time.
+Utilizing a GPS receiver and an ESP32-WROOM-32 board, the Race.net is designed to draw minimal power while still providing several essential functions for car groups. The ESP WiFi antenna allows the vehicles to share data in a way not seen before, sharing waypoints and driver profiles at up to a 1/4 mile away, meaning everyone in a parking lot will be able to get the message without needing to text the address tons of times, or setting up a unique group each time.
 
 The GPS allows Race.net to record accurate velocity and positional data, and when combined with the accelerometer, it allows for precise calculations of speed, acceleration, and items like 1/4 and 1/8 mile times. Race.net can also indicate directions to the driver.
 
@@ -19,9 +19,9 @@ Race.Net integrates with cellphones, allowing for exporting of data and selectin
 - After a race in concluded, Scoreboards are generated and can be saved for future record.
 
 ## Project Status
-As of 2020-3-17, hardware has been ordered for two test units. See Checklist.md for more details.
+As of 2020-4-11, hardware has been ordered for two test units. See Checklist.md for more details.
 
-As of 2020-3-20, software is veing defined in pseudocode
+As of 2020-4-11, software is sketched out and currently being roughed together.
 
 ## Future considerations
 - Once prototyping is done, a custom PCB could be printed an manufactured to allow for smaller form factor and reduced price.

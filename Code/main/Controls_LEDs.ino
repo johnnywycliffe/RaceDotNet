@@ -2,25 +2,25 @@
 
 //Gets input from buttons
 int8_t getInput6Button(){
-  int8_t output = 0;
+  uint8_t output = 0;
   //Check buttons
-  if (digitalRead(BUTTON1_PIN)==HIGH){
-    output = output|INPUTMASK_BUTTON1;
+  if (button1.uniquePress()){
+    bitSet(output, BUTTON1);
   }
-  if (digitalRead(BUTTON2_PIN)==HIGH){
-    output = output|INPUTMASK_BUTTON2;
+  if (button2.uniquePress()){
+    bitSet(output, BUTTON2);
   }
-  if (digitalRead(UP_PIN)==HIGH){
-    output = output|INPUTMASK_UP;
+  if (buttonUp.uniquePress()){
+    bitSet(output, BUP);
   }
-  if (digitalRead(DOWN_PIN)==HIGH){
-    output = output|INPUTMASK_DOWN;
+  if (buttonDown.uniquePress()){
+    bitSet(output, BDOWN);
   }
-  if (digitalRead(LEFT_PIN)==HIGH){
-    output = output|INPUTMASK_LEFT;
+  if (buttonLeft.uniquePress()){
+    bitSet(output, BLEFT);
   }
-  if (digitalRead(RIGHT_PIN)==HIGH){
-    output = output|INPUTMASK_RIGHT;
+  if (buttonRight.uniquePress()){
+    bitSet(output, BRIGHT);
   }
   return output;
 }
@@ -31,23 +31,23 @@ int8_t getInputJoystick(){
   int8_t output = 0;
   //Check buttons
   if (digitalRead(BUTTON1_PIN)==HIGH){
-    output = output|INPUTMASK_BUTTON1;
+    output = output|FLAG_BUTTON1;
   }
   if (digitalRead(BUTTON2_PIN)==HIGH){
-    output = output|INPUTMASK_BUTTON2;
+    output = output|FLAG_BUTTON2;
   }
   //Check joystick
   int16_t axis = analogRead(UD_PIN);
   if (axis < DEADZONE_LO){
-    output = output|INPUTMASK_DOWN;
+    output = output|FLAG_DOWN;
   } else if (axis > DEADZONE_HI) {
-    output = output|INPUTMASK_UP;
+    output = output|FLAG_UP;
   }
   axis = analogRead(LR_PIN);
   if (axis < DEADZONE_LO){
-    output = output|INPUTMASK_LEFT;
+    output = output|FLAG_LEFT;
   } else if (axis > DEADZONE_HI) {
-    output = output|INPUTMASK_RIGHT;
+    output = output|FLAG_RIGHT;
   }
   return output;
 }

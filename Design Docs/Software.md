@@ -27,6 +27,7 @@ Menu selection
   - Setup
   - Run
 - Random location
+- Cat & Mouse
 - Stats
 - Driver profile
   - View profile
@@ -500,6 +501,32 @@ All following drivers:
 4. Time
 5. Penalties earned
 
+### Cat and Mouse
+Two drivers, one leading and the other following. The driver in the lead needs to pull away from the other driver by a large margin, and the trailing driver needs to pass. 
+
+#### Description
+This has to be a direct challenge between two drivers. The position of first or second can be randomly selected or chosen by mutual agreement. A Sprint may also be chosen as a resent point.
+
+Once both cars are in postion, they hit button 1 and a countdown starts. Once the countdown finishes, both drivers take off, and then the device will check constantly to see who's in the lead.
+
+If the chaser catches up and passes the leader, the chaser wins. If the leader can drive fast enough to pull more than a set distance (for now, assume 1/8th mile max) then the leader wins.
+
+#### High Level
+Initiating Driver:
+1. Selects a driver from a list of known drivers.
+2. Sends challenge, along with a course and/or who is going to choose to start in front.
+3. If a response comes back, go to "Race Start"
+
+
+
+#### Data saved to SD
+1. Start location
+2. Time
+3. End location
+4. Participant IDs
+5. Penalties
+6. Score
+
 ## Classes/Structs
 A definition of some classes or structs. Probably mostly structs.
 
@@ -521,7 +548,7 @@ A definition of some classes or structs. Probably mostly structs.
 - Next Checkpoint (pointer?)
 - CRC/hash check thing
 
-### Scoreboard (Sprint, Course, Point-to-Point)
+### Scoreboard (Sprint, Course, Point-to-Point, Cat and Mouse)
 - Array of participant IDs
 - Array of times
 - Array of penalties
@@ -565,7 +592,7 @@ Random will need to stare distance as a variables
 In here are the functions used to build up the program, in no particular order. The high level stuff above should be able to be largly replced with these functions.
 
 ### raceInit()
-Used for all races. 
+Used for general races. 
 
 - gets settings from user (type of race, setup time, race settings, max participants, etc)
 - broadcasts settings to vehicles in vicinity. Include course file.
@@ -577,6 +604,9 @@ Used for all races.
   - during setup time, everyone is given a copy of the participants list.
   - backOut() should be available
 - countdown()
+
+### raceInitTargeted()
+Used to send to specific drivers rather than anyone in the vicinity.
 
 ### countdown()
 Handles the start of a race, coordinating LEDS
@@ -608,7 +638,7 @@ What device does while racing (Excluding drag)
 Handles all of the race starting things
 
 - Records race start time
-- Waits for car to start moving
+- Waits for car to start moving -Checks accelerometer
   - Records time car started to move
 - whileRacing()
 
@@ -617,11 +647,13 @@ Allows a user to remove themselves from the scoreboard voluntarily. If done duri
 
 - Gets whether should be penalized or not
 - Checks if user has received button 2
-- confirms backing out with second button press within 5 seconds
-- sends message to host to remove from scoreboard. if host 
+- Confirms backing out with second button press within 5 seconds
+- Sends message to host to remove from scoreboard. if host drops out, might need to transfer ownership somehow.
 
 ## Network scheme
-TODO
+ESP Now uses a peer-to-peer system with up to 20 connections. The packets are sent with ack sets for reliability.
+
+Each payload has a maximum of 250 bytes. 
 
 ## File scheme
 ### Saving/loading from SD
@@ -664,6 +696,7 @@ SD cards (in arduino environs) work with 8.3 file names, like DOS.
 | Sprint | .spr | /race/sprint/name/ | 5 digits of name, 3 digit number auto generated | NEATS035.spr |
 | Point-to-Point | .p2p | /race/p2p/name/ | 5 digits of name, 3 digit number auto generated | POINT001.p2p |
 | Random | .rnd | /race/random/name/ | date (YYMMDD) + 2 digits for individual run  | 20070304.rnd |
+| Cat & Mouse | .cam | /race/catmouse/name | date (YYMMDD) + 2 digits for individual run | 21060701.cat
 | Score/results | .res | ../name/ | date (YYMMDD) + 2 digits for individual run | 20041501.res |
 | Drag results | .drg | /race/drag/ | date (YYMMDD) + 2 digits for individual run | 20122506.drg |
 | Locations | .loc | /locations/ | 8 chars of name | TRDINER2.loc |
@@ -672,6 +705,22 @@ Inside each folder there are subfolders per race type for saving courses and mul
 
 A course called "GDNST003.crs" would be in "/course/GDNST003/". All scoreboards associated with the course (.res) are included in the folder for organizational purposes.
 
+### Ensuring no data is tampered with
+People like to win, and some people like to inflate how important they are by lying. Hashing stuff will make that a lot harder.
+
+To stop this, Everything is going to need to be hashed. There's going to be a hash for the course/sprint/whatever, one for the start of the race handed to all local drivers and one handed out at the conclusion of the race.
+
+The first one is to avoid tampering with the course. This means two people could run the same course or sprint on two different days and they could trust the course was unodified.
+
+The second is to allow for later arbitration. Suppose a driver insisted they participated when they didn't, or the other drivers insist that a driver didn't participate when they did. Basically, if you got the code you were part of the race and if you don't have it you weren't.
+
+The third if for score integrity. Obviously, if you can manipulate and upload your own scores, people would do it. This check will include the previous codes inside of it, making it very hard to manipulate the end result, theoretically.
+
+Obviously, Hashes aren't perfect, but this isn't intended to protect against the internet or the NSA. It's infefasible to get hash collisions as it is, and that's good enough for this project.
+
 ## Webapp
 TODO
+
+
+
 

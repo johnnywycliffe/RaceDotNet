@@ -11,13 +11,14 @@ This document is to give a general idea of the statue of individual modules and 
 - [x] Part assembled
 - [x] Libraries installed, communicating with programming computer
 - [x] Sample code runs
+- [x] Devices can send messages back and forth
 
 ### Screen
 - [x] Selection of part
 - [x] Part ordered
 - [x] Part received
 - [x] Part assembled
-- [ ] pinout defined
+- [x] pinout defined
 - [x] Libraries installed
 - [x] Screen can display without issues
 
@@ -29,15 +30,6 @@ This document is to give a general idea of the statue of individual modules and 
 - [ ] pinout defined
 - [ ] Libraries installed
 - [ ] GPS data received and verified
-
-### NRF24 transceiver
-- [x] Selection of part
-- [x] Part ordered
-- [x] Part received
-- [X] Part assembled
-- [ ] pinout defined
-- [ ] Libraries installed
-- [ ] Two unis can communicate back and forth
 
 ### Accelerometer
 - [x] Selection of part
@@ -53,10 +45,10 @@ This document is to give a general idea of the statue of individual modules and 
 - [x] Part ordered
 - [x] Part received
 - [x] Part assembled
-- [ ] pinout defined
+- [x] pinout defined
 - [X] Libraries installed
-- [ ] Data can be written to SD card
-- [ ] Data can be read off of SD card
+- [x] Data can be written to SD card
+- [x] Data can be read off of SD card
 
 ### Power supply
 - [x] Selection of parts

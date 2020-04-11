@@ -1,43 +1,31 @@
 /* Race.Net main 
  *  Ver: 0.0.0
  *  Author: Jeremy Stintzcum
- *  Date Modified: 3/27/20
+ *  Date Modified: 4/11/20
 */
 
-//Included default libraries
-#include <SPI.h>
-#include <Wire.h>
-
-//External libraries
 //Screen
 #include "SSD1306Spi.h"
-
-//Defines
-//Screen
 #define OLED_DC    2
 #define OLED_CS    4
 #define OLED_RESET 5
-
-//Display
-#define TEXT_V_SMALL 8
-#define TEXT_H_SMALL 21
-#define TEXT_V_LARGE 16
-#define TEXT_H_LARGE 10
+SSD1306Spi display(OLED_RESET, OLED_DC, OLED_CS);
 
 //Inputs
-#define INPUTMASK_BUTTON1 0x01
-#define INPUTMASK_BUTTON2 0x02
-#define INPUTMASK_UP      0x04
-#define INPUTMASK_DOWN    0x08
-#define INPUTMASK_LEFT    0x10
-#define INPUTMASK_RIGHT   0x20
-#define BUTTON1_PIN 3
-#define BUTTON2_PIN 4
+#include "Button.h"
+#define BUTTON1 0
+#define BUTTON2 1
+#define BUP 2
+#define BDOWN 3
+#define BLEFT 4
+#define BRIGHT 5
+Button button1(13,PULLUP);
+Button button2(12,PULLUP);
 //Button up/down/left/right
-#define UP_PIN 5
-#define DOWN_PIN 6
-#define LEFT_PIN 7
-#define RIGHT_PIN 8
+Button buttonUp(14,PULLUP);
+Button buttonDown(27,PULLUP);
+Button buttonLeft(26,PULLUP);
+Button buttonRight(32,PULLUP);
 //For Joystick up/down/left/right
 //#define UD_PIN A0
 //#define LR_PIN A1
@@ -49,25 +37,63 @@
 #define LED_PIN_GRN 10
 #define LED_PIN_BLU 11
 
-//State
-#define MENU 0
+// definitions
+struct MenuItem {
+  String title;
+  String subtitle;
+  void (*funcPtr)(String);
+};
 
-//Initialization
-SSD1306Spi  display(5, 2, 4);
+class Menu {
+public:
+  MenuItem *arr;
+  Menu *prevMenu;
+public:
+  Menu(int8_t arrLen, String *titleArr, String *subArr, void (*ptr[])(String)){
+    arr = new MenuItem[arrLen];
+    for (int8_t i=0;i<arrLen;i++){
+      arr[i].title = titleArr[i];
+      arr[i].subtitle = subArr[i];
+      arr[i].funcPtr = ptr[i];
+    }
+  }
+  ~Menu(){
+    delete[] arr;
+  }
+  void setParentMenu(){} //Used to return to a previous menu
+  int8_t runMenu(){} //does what "notmenu" does.
+};
 
-//Globals
-//Main
-int8_t state = 0;
-      
+
+//TEST CODE
+void test(String blast){
+  Serial.println(blast);
+}
+const int8_t mainArrLen = 3;
+String arr1[3] = {"1","2","3"};
+String arr2[3] = {"4","5","6"};
+void (*ptr[3])(String) = {test,test,test};//CANNOT BE UNINITIALIZED
+Menu m(mainArrLen,arr1,arr2,ptr);
+//END TEST CODE
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   if(!display.init()) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
+  display.flipScreenVertically();
+  display.setFont(ArialMT_Plain_10);
+  display.setTextAlignment(TEXT_ALIGN_CENTER);
+  display.setContrast(255);
 }
 
 void loop() {
+  //mainArr[0].runFunc();
+  
+  //drawMenuScreen("HELP",true,true);
+  //menu(0,mainArr,mainArrLen);
+  /*
   //Base state machine
   switch(state){
     case MENU:
@@ -75,5 +101,5 @@ void loop() {
       //If packet received, interpret and interupt menu if needed
       mainMenu(0); //Run menu command
       break;
-  }
+  }*/
 }

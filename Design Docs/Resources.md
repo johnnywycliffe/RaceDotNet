@@ -7,6 +7,7 @@ A list of all the required libraries and links to resources used to get Race.Net
 | --- | --- | --- | --- |
 | [TinyGPSPlus](https://github.com/mikalhart/TinyGPSPlus) |  | GPS NMEA interpretation | LGPL 2.1 or later |
 | [ESP2866 OLED](https://github.com/ThingPulse/esp8266-oled-ssd1306) | 4.1.0 | SPI Screen | MIT |
+| [Button](https://github.com/tigoe/Button) |  | Button debounce | LGPL |
 
 
 ## Links
