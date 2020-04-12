@@ -89,11 +89,6 @@ This document is to give a general idea of the statue of individual modules and 
 - [ ] GPS accurately finds position
 - [ ] GPS data can be stored in a timely manner
 
-### Module functionality - NRF24 Communication
-- [ ] NRF can send data to a specific device
-- [ ] NRF can send data to a bunch of devices
-- [ ] NRF can send all data in a timely manner.
-
 ### Module functionality - Accelerometer
 - [ ] Accel. can be calibrated.
 - [ ] Accel. provides accurate numbers
@@ -241,12 +236,6 @@ This document is to give a general idea of the statue of individual modules and 
 - [ ] GPS Setup time does not block device
 - [ ] Functions that require GPS do not start up until GPS signal is found.
 
-### Integration - NRF24
-- [ ] NRF24 transceiver does not interefere with other devices
-- [ ] NRF24 transceiver is non-blocking
-- [ ] NRF24 transceiver correctly sends and receives data between devices.
-- [ ] NRF24 transceiver sends data to all available units
-
 ### Integration - Screen
 - [ ] Screen does not interefere with other devices
 - [ ] Screen is non-blocking 
@@ -278,7 +267,6 @@ This document is to give a general idea of the statue of individual modules and 
 - [ ] Power rail attached
 - [ ] ESP32 attached
 - [ ] Screen attached
-- [ ] NRF attached
 - [ ] SD Card reader attached
 - [ ] GPS attached
 - [ ] Accelerometer attached
