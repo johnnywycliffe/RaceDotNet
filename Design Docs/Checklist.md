@@ -1,7 +1,7 @@
 # Checklist
 This document is to give a general idea of the statue of individual modules and sections of code. 
 
-##Stage 1: Hardware and hardware test
+## Stage 1: Hardware and hardware test
 2 units of part need to be ordered.
 
 ### Microcontroller

@@ -55,7 +55,7 @@ public:
             downArrow = false;
           }
           drawMenuScreen(dTitle,dSubtitle, upArrow, downArrow);
-          delay(1000);
+          delay(1000); //REMOVE
           break;
       } 
     } while (inProg);

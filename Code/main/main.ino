@@ -41,3 +41,11 @@ Button buttonRight(32,PULLUP);
 //Menu
 #define BACK -1
 #define SELECT -2
+
+//Device-device communication
+#include <esp_now.h>
+#include <WiFi.h>
+#define MAXPEERS 20
+#define MAXRETRIES 10
+#define CHANNEL 1 //TODO: Randomize channel? is their a reason ot pick one channel and stick with it?
+esp_now_peer_info_t peerlist[MAXPEERS] = {};

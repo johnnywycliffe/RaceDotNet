@@ -655,35 +655,56 @@ ESP Now uses a peer-to-peer system with up to 20 connections. The packets are se
 
 Each payload has a maximum of 250 bytes. 
 
+There will be a few states for the wifi module: Discovery, Listening, Known-network, and off
+
+### Discovery mode
+Looks for SSIDs that start with RDN, and then try to send a packet. If it gets a valid response, then it will ask for the other device's info to include them as a participant. Used when a race is set up without specifying a challenger by name.
+
+This is the equivalent of getting out of your car and saying "Hey, who want's to race?"
+
+### Listening mode
+Listening sets device a WiFi/AP mode, which actually makes the devcice visible to things like smartphones. However, a password is needed to access them, so as long as the passwords are randomized per unit, it should be secure enough. This mode is used when not all the drivers are "known" so you can't send everything to a specific device.
+
+The SSID will start with "RDN-$USER-####" where $USER is the profile name (Maybe truncated) and some random digits like discord to make sure two drivers with similar usernames don't conflict.
+
+This mode should only be used when in park or if cruising for challenges. This is probably the most vulnerable the device can be to outside influences.
+
+Lastly, this mode isn't needed after a race starts- once all participants are known, AP mode can be shut off. This is how new devices are found by discovery mode.
+
+### Known-Network mode
+This mode allows a module to listen to other peers without opening up an AP to everyone else. This is used for general communication. All devices are added to everyone else's peerlist, and they can reference each other at will.
+
+Since there's no distinct "master-slave" relationship with ESP NOW, this means all of the units will be able to talks to each other freely, allowing whoever comes in first to set up the scoreboard and allows for resending the scoreboard out to newly arriving drivers.
+
 ## File scheme
 ### Saving/loading from SD
 Saving the structs to a file should be done like this:
 
-SD.printf("#ID:%s",profile.id);
-SD.printf("#NAME:%s",profile.name);
+SD.printf("#ID:%s",profile.id);  
+SD.printf("#NAME:%s",profile.name);  
 
 Reading files something like this:
 
 {
-  char line[25];
-  char *ptr = strchr(line, ':');
-  if(ptr == NULL)
-  {
-    // error, no colon
-  }
-  else
-  {
-    *ptr = '\0';
-    ptr++;
-    if(strcmp(line, "#NAME") == 0)
-    {
-      strcpy(data.name, ptr);
-    }
-    else if(strcmp(line, "#ID") == 0)
-    {
-      data.ID = atoi(ptr);
-    }
-  }
+  char line[25];  
+  char *ptr = strchr(line, ':');  
+  if(ptr == NULL)  
+  {  
+    // error, no colon  
+  }  
+  else  
+  {  
+    *ptr = '\0';  
+    ptr++;  
+    if(strcmp(line, "#NAME") == 0)  
+    {  
+      strcpy(data.name, ptr);  
+    }  
+    else if(strcmp(line, "#ID") == 0)  
+    {  
+      data.ID = atoi(ptr);  
+    }  
+  }  
 
 ### File Structure
 SD cards (in arduino environs) work with 8.3 file names, like DOS. 
@@ -700,6 +721,7 @@ SD cards (in arduino environs) work with 8.3 file names, like DOS.
 | Score/results | .res | ../name/ | date (YYMMDD) + 2 digits for individual run | 20041501.res |
 | Drag results | .drg | /race/drag/ | date (YYMMDD) + 2 digits for individual run | 20122506.drg |
 | Locations | .loc | /locations/ | 8 chars of name | TRDINER2.loc |
+| Passive Data | .log | /log/ | date (YYMMDD) + 2 digits for individual run | 20040501.log |
 
 Inside each folder there are subfolders per race type for saving courses and multiple runs. For example:
 
