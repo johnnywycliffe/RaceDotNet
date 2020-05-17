@@ -1,7 +1,7 @@
 /* Race.Net main 
  *  Ver: 0.0.0
  *  Author: Jeremy Stintzcum
- *  Date Modified: 4/11/20
+ *  Date Modified: 5/16/20
 */
 
 //Screen
@@ -45,7 +45,16 @@ Button buttonRight(32,PULLUP);
 //Device-device communication
 #include <esp_now.h>
 #include <WiFi.h>
-#define MAXPEERS 20
+#define MAXPEERS 20 //Max number of participants
 #define MAXRETRIES 10
-#define CHANNEL 1 //TODO: Randomize channel? is their a reason ot pick one channel and stick with it?
-esp_now_peer_info_t peerlist[MAXPEERS] = {};
+#define CHANNEL 1 //TODO: Randomize channel? is there a reason ot pick one channel and stick with it?
+#define MAXMSGSIZE 240 //Hard cap is 250 bytes, including other data
+int totalPeers = 0;
+
+//Race
+#define MAXCHKCNT 20 //Max number of checkpoints that can be set in a race
+#define RACE 1
+#define DRIVER 2
+#define CHKPNT 3
+#define SCORE 4
+#define SCOREBRD 5

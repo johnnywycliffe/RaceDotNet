@@ -14,3 +14,7 @@ String arr2[maxArrLen] = {"Two drivers, pass or  pull away","Get from A to B.","
 "View and edit profiles","Edit preferences","Other info"};
 void (*ptr[maxArrLen])() = {dummy,dummy,dummy,dummy,dummy,dummy,dummy,dummy,dummy,dummy};//CANNOT BE UNINITIALIZED
 Menu m(maxArrLen,arr1,arr2,ptr,NULL);
+
+//Communication
+msgpack incomingData;
+esp_now_peer_info_t peerList[MAXPEERS] = {};
